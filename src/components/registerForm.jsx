@@ -11,7 +11,14 @@ class RegisterForm extends Component {
     console.log("Registered");
   };
 
+  handleChange = ({ currentTarget: input }) => {
+    const account = { ...this.state.account };
+    account[input.name] = input.value;
+    this.setState({ account });
+  };
+
   render() {
+    const { account } = this.state;
     return (
       <div>
         <h1>Register</h1>
@@ -19,7 +26,9 @@ class RegisterForm extends Component {
           <div className="form-group">
             <label htmlFor="username">Username</label>
             <input
-              value={this.state.account.username}
+              value={account.username}
+              onChange={this.handleChange}
+              name="username"
               id="username"
               type="text"
               className="form-control"
@@ -27,11 +36,25 @@ class RegisterForm extends Component {
           </div>
           <div className="form-group">
             <label htmlFor="password">Password</label>
-            <input id="password" type="text" className="form-control" />
+            <input
+              value={account.password}
+              onChange={this.handleChange}
+              name="password"
+              id="password"
+              type="text"
+              className="form-control"
+            />
           </div>
           <div className="form-group">
             <label htmlFor="name">Name</label>
-            <input id="name" type="text" className="form-control" />
+            <input
+              value={account.name}
+              onChange={this.handleChange}
+              name="name"
+              id="name"
+              type="text"
+              className="form-control"
+            />
           </div>
           <button className="btn btn-primary">Register</button>
         </form>
