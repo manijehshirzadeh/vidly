@@ -3,10 +3,28 @@ import React, { Component } from "react";
 class RegisterForm extends Component {
   state = {
     account: { username: "", password: "", name: "" },
+    errors: {},
+  };
+
+  validate = () => {
+    const errors = {};
+
+    const { account } = this.state;
+    if (account.username.trim() === "")
+      errors.username = " Username must be valid email.";
+    if (account.password.trim() === "")
+      errors.password = " Password length must be at least 5.";
+
+    return Object.keys(errors).length === 0 ? null : errors;
   };
 
   handleSubmit = (e) => {
     e.preventDefault();
+
+    const errors = this.validate();
+
+    this.setState({ errors: errors || {} });
+    if (errors) return;
 
     console.log("Registered");
   };
@@ -18,44 +36,31 @@ class RegisterForm extends Component {
   };
 
   render() {
-    const { account } = this.state;
+    const { account, errors } = this.state;
     return (
       <div>
         <h1>Register</h1>
         <form onSubmit={this.handleSubmit}>
-          <div className="form-group">
-            <label htmlFor="username">Username</label>
-            <input
-              value={account.username}
-              onChange={this.handleChange}
-              name="username"
-              id="username"
-              type="text"
-              className="form-control"
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="password">Password</label>
-            <input
-              value={account.password}
-              onChange={this.handleChange}
-              name="password"
-              id="password"
-              type="text"
-              className="form-control"
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="name">Name</label>
-            <input
-              value={account.name}
-              onChange={this.handleChange}
-              name="name"
-              id="name"
-              type="text"
-              className="form-control"
-            />
-          </div>
+          <input
+            name="username"
+            value={account.username}
+            label="Username"
+            onChange={this.handleChange}
+            error={errors.username}
+          />
+          <input
+            name="password"
+            value={account.password}
+            label="Password"
+            onChange={this.handleChange}
+            error={errors.password}
+          />
+          <input
+            name="name"
+            value={account.name}
+            label="Name"
+            onChange={this.handleChange}
+          />
           <button className="btn btn-primary">Register</button>
         </form>
       </div>
