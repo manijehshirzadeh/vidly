@@ -16,8 +16,8 @@ class Movies extends Component {
     currentPage: 1,
     pageSize: 4,
     searchQuery: "",
-    selectedGenre: null,
-    sortColumn: { path: "title", order: "asc" }
+    selectedGenre: { _id: "", name: "All Genres" },
+    sortColumn: { path: "title", order: "asc" },
   };
 
   componentDidMount() {
@@ -26,14 +26,14 @@ class Movies extends Component {
     this.setState({ movies: getMovies(), genres });
   }
 
-  handleDelete = movie => {
-    const movies = this.state.movies.filter(m => m._id !== movie._id);
+  handleDelete = (movie) => {
+    const movies = this.state.movies.filter((m) => m._id !== movie._id);
     this.setState({ movies });
 
     deleteMovie(movie._id);
   };
 
-  handleLike = movie => {
+  handleLike = (movie) => {
     const movies = [...this.state.movies];
     const index = movies.indexOf(movie);
     movies[index] = { ...movies[index] };
@@ -41,19 +41,19 @@ class Movies extends Component {
     this.setState({ movies });
   };
 
-  handlePageChange = page => {
+  handlePageChange = (page) => {
     this.setState({ currentPage: page });
   };
 
-  handleGenreSelect = genre => {
+  handleGenreSelect = (genre) => {
     this.setState({ selectedGenre: genre, searchQuery: "", currentPage: 1 });
   };
 
-  handleSearch = query => {
+  handleSearch = (query) => {
     this.setState({ searchQuery: query, selectedGenre: null, currentPage: 1 });
   };
 
-  handleSort = sortColumn => {
+  handleSort = (sortColumn) => {
     this.setState({ sortColumn });
   };
 
@@ -64,16 +64,16 @@ class Movies extends Component {
       sortColumn,
       selectedGenre,
       searchQuery,
-      movies: allMovies
+      movies: allMovies,
     } = this.state;
 
     let filtered = allMovies;
     if (searchQuery)
-      filtered = allMovies.filter(m =>
+      filtered = allMovies.filter((m) =>
         m.title.toLowerCase().startsWith(searchQuery.toLowerCase())
       );
     else if (selectedGenre && selectedGenre._id)
-      filtered = allMovies.filter(m => m.genre._id === selectedGenre._id);
+      filtered = allMovies.filter((m) => m.genre._id === selectedGenre._id);
 
     const sorted = _.orderBy(filtered, [sortColumn.path], [sortColumn.order]);
 
